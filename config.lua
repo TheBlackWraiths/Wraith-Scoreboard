@@ -38,7 +38,7 @@ Config.PillColors = {
 	staff = "#FACC15",
 }
 
-Config.ShowHeists = false
+Config.ShowHeists = true
 Config.RobberyPoliceGroup = "law_enforcement"
 
 Config.Robberies = {
