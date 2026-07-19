@@ -113,7 +113,23 @@ function Bridge.GetGroup(player)
     return nil
 end
 
-function Bridge.IsStaff(player)
+function Bridge.IsStaff(player, source)
+    local src = source
+        or (player and player.PlayerData and player.PlayerData.source)
+        or (player and player.source)
+
+    if Config.UseAmznAdminStaff then
+        if not src or GetResourceState('amzn_admin') ~= 'started' then
+            return false
+        end
+
+        local ok, group = pcall(function()
+            return exports.amzn_admin:GetPlayerPermissionGroup(src)
+        end)
+
+        return ok and group ~= nil and group ~= 'User'
+    end
+
     local group = Bridge.GetGroup(player)
     return group ~= nil and staffLookup[group] == true
 end
@@ -316,7 +332,7 @@ function Bridge.BuildPlayerEntry(source, player)
         jobId = jobName or 'unknown',
         tagColor = tagColor,
         onDuty = onDuty,
-        isStaff = Bridge.IsStaff(player),
+        isStaff = Bridge.IsStaff(player, source),
         ping = GetPlayerPing(source) or 0,
     }
 end

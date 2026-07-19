@@ -11,7 +11,7 @@ Drag-and-drop FiveM scoreboard for **QBX Core**, **QBCore**, and **ESX**. Drop i
 - Overhead player IDs while the scoreboard is open
 - Heist / robbery availability panel (optional)
 - Server-side caching for large player counts
-- **HOME** to toggle · **TAB** to release mouse while keeping the board open
+- **HOME** or **/scoreboard** to toggle · **TAB** to release mouse while keeping the board open
 
 ## Requirements
 
@@ -53,13 +53,24 @@ No UI rebuild is required. Replace the image and restart the resource to update 
 
 ## Controls
 
-| Key                | Action                                                |
-| ------------------ | ----------------------------------------------------- |
-| **HOME** (default) | Open / close scoreboard                               |
-| **TAB**            | Toggle mouse focus (board stays open, IDs still show) |
-| **ESC**            | Close scoreboard                                      |
+| Input                              | Action                                                |
+| ---------------------------------- | ----------------------------------------------------- |
+| **HOME** (default keybind)         | Open / close scoreboard                               |
+| **/scoreboard** (default command)  | Open / close scoreboard                               |
+| **TAB**                            | Toggle mouse focus (board stays open, IDs still show) |
+| **ESC**                            | Close scoreboard                                      |
 
-Rebind in FiveM settings under **Toggle Scoreboard** and **Toggle Scoreboard Focus**, or change `Config.OpenKey` / `Config.FocusToggleKey`.
+Enable/disable and rename these in `config.lua`:
+
+```lua
+Config.EnableOpenKeybind = true
+Config.OpenKey = "HOME"
+
+Config.EnableOpenCommand = true
+Config.OpenCommand = "scoreboard"
+```
+
+Rebind keys in FiveM settings under **Toggle Scoreboard** and **Toggle Scoreboard Focus**, or change `Config.OpenKey` / `Config.FocusToggleKey`.
 
 ## Configuration
 
@@ -69,11 +80,14 @@ All settings are in `config.lua`.
 
 | Option                  | Description                               |
 | ----------------------- | ----------------------------------------- |
-| `Config.Framework`      | `"auto"`, `"qbx"`, `"qbcore"`, or `"esx"` |
-| `Config.ServerName`     | Name shown in the header                  |
-| `Config.OpenKey`        | Keybind to open the scoreboard            |
-| `Config.FocusToggleKey` | Keybind to toggle UI focus                |
-| `Config.UpdateInterval` | How often server cache refreshes (ms)     |
+| `Config.Framework`           | `"auto"`, `"qbx"`, `"qbcore"`, or `"esx"` |
+| `Config.ServerName`          | Name shown in the header                  |
+| `Config.EnableOpenKeybind`   | Enable the open keybind                   |
+| `Config.OpenKey`             | Keybind to open the scoreboard            |
+| `Config.EnableOpenCommand`   | Enable the open chat command              |
+| `Config.OpenCommand`         | Chat command name (without `/`)           |
+| `Config.FocusToggleKey`      | Keybind to toggle UI focus                |
+| `Config.UpdateInterval`      | How often server cache refreshes (ms)     |
 
 ### Display toggles
 
@@ -150,12 +164,17 @@ Config.JobSections = {
 ### Staff
 
 ```lua
+-- Use 919Admin / amzn_admin for staff detection (ignores Config.StaffGroups)
+Config.UseAmznAdminStaff = false
+
 Config.StaffGroups = {
     "admin",
     "superadmin",
     "god",
 }
 ```
+
+When `Config.UseAmznAdminStaff = true`, staff is anyone with a permission group from `exports.amzn_admin:GetPlayerPermissionGroup` other than `"User"`. Framework ACE / `Config.StaffGroups` are not used.
 
 ### Robberies
 
@@ -204,7 +223,7 @@ Or set `Config.Debug = true` in `config.lua`.
 
 - **QBX / QBCore:** Duty uses `PlayerData.job.onduty`
 - **ESX:** No native duty — all job members count when `ondutyOnly = true`
-- **Staff:** Matched via `Config.StaffGroups` and framework permissions
+- **Staff:** Matched via `Config.StaffGroups` / framework permissions, or `amzn_admin` when `Config.UseAmznAdminStaff` is enabled
 
 ## License
 

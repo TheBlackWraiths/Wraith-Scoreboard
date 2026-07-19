@@ -51,7 +51,7 @@ local function canViewPlayerList(forSource)
     end
 
     local player = Bridge.GetPlayer(forSource)
-    return player ~= nil and Bridge.IsStaff(player)
+    return player ~= nil and Bridge.IsStaff(player, forSource)
 end
 
 getCachePayload = function(forSource)
@@ -91,7 +91,7 @@ refreshCache = function()
             local player = Bridge.GetPlayer(src)
 
             if player then
-                if Bridge.IsStaff(player) then
+                if Bridge.IsStaff(player, src) then
                     staffCount = staffCount + 1
                 end
 

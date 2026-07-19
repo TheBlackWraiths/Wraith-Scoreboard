@@ -7,7 +7,12 @@ Config.ServerName = "PLACEHOLDER"
 Config.UseServerLogo = true
 Config.ServerLogo = "images/server_logo.png"
 
+Config.EnableOpenKeybind = true
 Config.OpenKey = "HOME"
+
+Config.EnableOpenCommand = true
+Config.OpenCommand = "scoreboard"
+
 Config.FocusToggleKey = "TAB"
 Config.UpdateInterval = 5000
 
@@ -15,6 +20,7 @@ Config.ShowPlayerList = true
 Config.PlayerListAdminOnly = true
 Config.ShowStaffCount = true
 
+Config.UseAmznAdminStaff = false
 Config.StaffGroups = {
 	"admin",
 	"superadmin",

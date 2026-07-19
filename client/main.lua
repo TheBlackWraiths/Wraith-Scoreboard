@@ -137,8 +137,18 @@ CreateThread(function()
     end
 end)
 
-RegisterCommand('w-scoreboard', toggleScoreboard, false)
-RegisterKeyMapping('w-scoreboard', 'Toggle Scoreboard', 'keyboard', Config.OpenKey)
+if Config.EnableOpenKeybind ~= false then
+    RegisterCommand('+w-scoreboard', toggleScoreboard, false)
+    RegisterCommand('-w-scoreboard', function() end, false)
+    RegisterKeyMapping('+w-scoreboard', 'Toggle Scoreboard', 'keyboard', Config.OpenKey or 'HOME')
+end
+
+if Config.EnableOpenCommand ~= false then
+    local openCommand = type(Config.OpenCommand) == 'string' and Config.OpenCommand:gsub('^/+', '') or 'scoreboard'
+    if openCommand ~= '' then
+        RegisterCommand(openCommand, toggleScoreboard, false)
+    end
+end
 
 RegisterCommand('w-scoreboard-focus', toggleNuiFocus, false)
 RegisterKeyMapping('w-scoreboard-focus', 'Toggle Scoreboard Focus', 'keyboard', Config.FocusToggleKey or 'TAB')
